@@ -1,6 +1,6 @@
 # middleman-portfolio
 
-A low-drama portfolio generator for your site. Place images in a `portfolio/` folder, then build. 
+A low-drama portfolio generator for your site. Place images in a `portfolio/` or `portfolio/[project]` directory, and build. That's it.
 
 1. Copy your images to `portfolio/[project]`.
 2. Number the images numerically. `portfolio/foo/1.jpg`
@@ -16,7 +16,7 @@ activate :portfolio
 
 ```rb
 activate :portfolio do |f|
-  f.portfolio_dir = 'whatever'
-  f.bar = 'something else'
+  # builds to portfolio.html and projects to portfolio/[project].html 
+  f.portfolio_dir = 'portfolio'
 end
 ```
