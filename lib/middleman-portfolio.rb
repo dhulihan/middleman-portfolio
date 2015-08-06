@@ -10,19 +10,44 @@ class Portfolio < ::Middleman::Extension
   attr_accessor :sitemap
   #alias :included :registered
 
+  class << self
+    def cleanup
+      # Delete tmp files
+      tmp_files = Dir.glob(File.join(tmp_dir, "*")).select {|f| File.file?(f)}
+      tmp_files.each {|f| 
+        File.delete(f)
+        debug "#{f} not deleted" if File.exist?(f)
+      }
+      Dir.rmdir(tmp_dir)
+    end
+
+    # path to temp dir for storing intermediate files
+    def tmp_dir
+      File.join(Dir.tmpdir, "middleman-portfolio")
+    end
+  end 
+
   def initialize(app, options_hash={}, &block)
     # Call super to build options from the options_hash
     super
+
+    # Create tmp dir
+    Dir.mkdir(Portfolio.tmp_dir) unless Dir.exist?(Portfolio.tmp_dir)
 
     # Require libraries only when activated
     # require 'necessary/library'
 
     # set up your extension
+    app.after_build do
+      Portfolio.cleanup
+    end 
   end
 
   def after_configuration
     register_extension_templates
   end
+
+
 
   # create a resource for each portfolio project
   def project_resources    
@@ -42,12 +67,13 @@ class Portfolio < ::Middleman::Extension
     projects.collect {|project| project_resource(project)}
   end 
 
+  # generate thumbnail OUTSIDE of build dir
   def generate_thumbnail(image)
     img = ::MiniMagick::Image.open(image)
     img.resize "#{options.thumbnail_width}x#{options.thumbnail_height}"
-    dst = File.join(Dir.tmpdir, thumbnail_name(image))
+    dst = File.join(Portfolio.tmp_dir, thumbnail_name(image))
     img.write(dst)
-    raise "Thumbnail not generated at #{dst}" unless File.exists?(dst)
+    raise "Thumbnail not generated at #{dst}" unless File.exist?(dst)
     return dst
   end
 
