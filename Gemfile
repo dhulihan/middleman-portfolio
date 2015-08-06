@@ -5,6 +5,8 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in middleman-portfolio.gemspec
 gemspec
 
+gem 'mini_magick'
+
 group :development do
   gem 'rake'
   gem 'rdoc'
