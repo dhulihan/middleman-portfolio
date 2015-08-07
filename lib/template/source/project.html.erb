@@ -1,3 +1,6 @@
-I'm a template project page.
-
-name: <%= name %>
+<div class="page-header">
+	<%= name %>
+</div>
+<% for image in images %>
+	<%#= link_to image_tag(thumbnail(image)), image %>
+<% end %>

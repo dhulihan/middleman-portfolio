@@ -1,5 +1,3 @@
-I'm the portfolio index page.
-
-<% for project in projects %>
-	<%= link_to project, "q/#{project}" %><br>
+<% for project_resource in project_resources %>
+	<%= link_to project_resource.metadata[:locals][:name], project_resource.path %>: <%= project_resource.path %>
 <% end %>
