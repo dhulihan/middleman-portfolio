@@ -1,6 +1,6 @@
 # middleman-portfolio
 
-A low-drama portfolio generator for your site. Place images in `source/portfolio/[project]/` directory, and build. That's it.
+A low-drama portfolio generator for your [middleman](https://github.com/middleman/middleman) site. Place images in `source/portfolio/[project]/` directory, and build. That's it.
 
 ## Setup
 
