@@ -1,25 +1,46 @@
 # middleman-portfolio
 
-## NOT READY YET, CHILL
-
-A low-drama portfolio generator for your site. Place images in a `portfolio/` or `portfolio/[project]` directory, and build. That's it.
-
-1. Copy your images to `portfolio/[project]`.
-2. Number the images numerically. `portfolio/foo/1.jpg`
-3. Behold your new portfolio page at [http://localhost:4567/portfolio](http://localhost:4567/portfolio)
+A low-drama portfolio generator for your site. Place images in `source/portfolio/[project]` directory, and build. That's it.
 
 ## Setup
+
+Add this to `Gemfile`
+
+```rb
+gem "middleman-portfolio"
+```
+
+and
+
+```sh
+bundle install
+```
+
+Add to `config.rb`
 
 ```rb
 activate :portfolio
 ```
 
-## Advanced Configuration
+Run `middleman server` 
+
+[`http://localhost:4567/portfolio`](http://localhost:4567/portfolio) (if you're using `directory_indexes`)
+
+[`http://localhost:4567/portfolio/index.html`](http://localhost:4567/portfolio/index.html) (vanilla middleman)
+
+
+## Configuration (optional)
 
 ```rb
 activate :portfolio do |f|
-  # builds to portfolio.html and projects to portfolio/[project].html 
+  # Looks in source/portfolio/ for projects and builds to build/portfolio/
   f.portfolio_dir = 'portfolio'
+
+  f.thumbnail_width = 200
+  f.thumbnail_height =150
+  
+  # css class added to thumbnails
+  f.thumbnail_class, "portfolio-thumbnail"
 end
 ```
 

@@ -2,7 +2,7 @@
 class Portfolio < ::Middleman::Extension
   TEMPLATES_DIR = File.expand_path('../template/source/', __FILE__)
 
-  option :portfolio_dir, 'portfolio', 'Default portfolio directory inside your project'
+  option :portfolio_dir, 'portfolio', 'Default portfolio directory inside your source'
   option :generate_thumbnails, true, 'Do you want thumbnails?'
   option :thumbnail_width, 200, "Width (in px) for thumbnails"
   option :thumbnail_height, 150,  "Height (in px) for thumbnails"
