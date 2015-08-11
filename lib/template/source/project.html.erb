@@ -1,3 +1,4 @@
+<h1><%= name %></h1>
 <% for thumb in thumbnail_resources  %>
 	<% link_to thumb.metadata[:locals][:image] do %>
 		<%= image_tag thumb.path, class: "#{options.thumbnail_class	}" %> 

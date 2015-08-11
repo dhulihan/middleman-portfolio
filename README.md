@@ -28,7 +28,7 @@ Run `middleman server`
 
 * [`http://localhost:4567/portfolio/index.html`](http://localhost:4567/portfolio/index.html) (vanilla middleman)
 
-or  `middleman build` if you're ready to roll
+or `middleman build` if you're ready to roll.
 
 
 ## Configuration (optional)
