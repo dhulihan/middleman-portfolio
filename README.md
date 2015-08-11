@@ -36,14 +36,19 @@ activate :portfolio do |f|
   # Looks in source/portfolio/ for projects and builds to build/portfolio/
   f.portfolio_dir = 'portfolio'
 
-  f.thumbnail_width = 200
-  f.thumbnail_height =150
+  # thumbnail width (px)
+  f.thumbnail_width  = 200 
+
+  # thumbnail height (px)
+  f.thumbnail_height = 150
   
-  # css class added to thumbnails
+  # css class added to thumbnail img tag
   f.thumbnail_class, "portfolio-thumbnail"
 end
 ```
 
 ## TODO
 
+* Custom templates
+* Page content from `data/`
 * Non-project images (stored directly in portfolio/)
