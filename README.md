@@ -49,6 +49,12 @@ activate :portfolio do |f|
 end
 ```
 
+## Additional Notes
+
+* You can mix and match image types (`.jpg`, `.png`, `.gif`)
+* [minimagick](https://github.com/minimagick/minimagick) is used for thumbnail generation. Make sure imagemagick is installed on your machine.
+
+
 ## TODO
 
 * Custom templates
