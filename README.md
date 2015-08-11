@@ -24,9 +24,11 @@ activate :portfolio
 
 Run `middleman server` 
 
-[`http://localhost:4567/portfolio`](http://localhost:4567/portfolio) (if you're using `directory_indexes`)
+* [`http://localhost:4567/portfolio`](http://localhost:4567/portfolio) (if you're using `directory_indexes`)
 
-[`http://localhost:4567/portfolio/index.html`](http://localhost:4567/portfolio/index.html) (vanilla middleman)
+* [`http://localhost:4567/portfolio/index.html`](http://localhost:4567/portfolio/index.html) (vanilla middleman)
+
+or  `middleman build` if you're ready to roll
 
 
 ## Configuration (optional)
