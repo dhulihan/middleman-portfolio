@@ -1,6 +1,5 @@
-<div class="page-header">
-	<%= name %>
-</div>
-<% for image in images %>
-	<%#= link_to image_tag(thumbnail(image)), image %>
+<% for thumb in thumbnail_resources  %>
+	<% link_to thumb.metadata[:locals][:image] do %>
+		<%= image_tag thumb.path, class: "#{options.thumbnail_class	}" %> 
+	<% end %>
 <% end %>

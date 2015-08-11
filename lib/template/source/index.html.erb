@@ -1,3 +1,9 @@
-<% for project_resource in project_resources %>
-	<%= link_to project_resource.metadata[:locals][:name], project_resource.path %>: <%= project_resource.path %>
+<% for project in project_resources %>
+	<% if project.metadata[:locals][:thumbnail_resources] %>
+		<% link_to project.path, title: project.metadata[:locals][:name] do %>
+			<%= image_tag project.metadata[:locals][:thumbnail_resources].first.path, class: "#{options.thumbnail_class}" %>	
+		<% end %>
+	<% else %>
+		<!-- No thumbnails found for <%= project.metadata[:locals][:name] %> -->
+	<% end %>
 <% end %>

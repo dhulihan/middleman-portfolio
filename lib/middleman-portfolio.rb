@@ -6,6 +6,7 @@ class Portfolio < ::Middleman::Extension
   option :generate_thumbnails, true, 'Do you want thumbnails?'
   option :thumbnail_width, 200, "Width (in px) for thumbnails"
   option :thumbnail_height, 150,  "Height (in px) for thumbnails"
+  option :thumbnail_class, "portfolio-thumbnail", "css class for portfolio thumbnails"
 
   attr_accessor :sitemap
   #alias :included :registered
@@ -34,9 +35,6 @@ class Portfolio < ::Middleman::Extension
     # Create tmp dir
     Dir.mkdir(Portfolio.tmp_dir) unless Dir.exist?(Portfolio.tmp_dir)
 
-    # Require libraries only when activated
-    # require 'necessary/library'
-
     # set up your extension
     app.after_build do
       Portfolio.cleanup
@@ -50,11 +48,16 @@ class Portfolio < ::Middleman::Extension
 
   # generate thumbnail OUTSIDE of build dir
   def generate_thumbnail(image)
-    img = ::MiniMagick::Image.open(image)
-    img.resize "#{options.thumbnail_width}x#{options.thumbnail_height}"
+    debug "Generating thumbnail of #{image}"
     dst = File.join(Portfolio.tmp_dir, thumbnail_name(image))
-    img.write(dst)
-    raise "Thumbnail not generated at #{dst}" unless File.exist?(dst)
+    if !File.exist?(dst)
+      img = ::MiniMagick::Image.open(image)
+      img.resize "#{options.thumbnail_width}x#{options.thumbnail_height}"
+      img.write(dst)
+      raise "Thumbnail not generated at #{dst}" unless File.exist?(dst)
+    else
+      debug "#{dst} already exists"
+    end 
     return dst
   end
 
@@ -73,9 +76,14 @@ class Portfolio < ::Middleman::Extension
 
   def manipulate_resource_list(resources)
     # Load in reverse order for easier building
-    resources += project_thumbnail_resources
-    resources += project_resources
-    resources << portfolio_index_resource
+    for project in projects
+      thumbs =  project_thumbnail_resources(project)
+      resources += thumbs
+      projs =  project_resources(thumbs)
+      resources += projs
+    end 
+    # resources += project_thumbnail_resources(project)  
+    resources << portfolio_index_resource(projs)
     return resources
   end
 
@@ -83,18 +91,19 @@ class Portfolio < ::Middleman::Extension
   def portfolio_path
     File.join(app.source_dir, options.portfolio_dir) 
   end
-
+  
   def portfolio_index_path
     "#{options.portfolio_dir}.html"
   end 
 
-  def portfolio_index_resource
+  def portfolio_index_resource(project_resources)
     source_file = template('index.html.erb')
     Middleman::Sitemap::Resource.new(app.sitemap, portfolio_index_path, source_file).tap do |resource|
       resource.add_metadata(
         # options: { layout: false }, 
         locals: {
           projects: projects,
+          options: options,
           project_resources: project_resources 
         }
       )
@@ -109,6 +118,11 @@ class Portfolio < ::Middleman::Extension
   # array of images for a project
   def project_images(project)
     Dir.glob(File.join(project_dir(project), '*'))
+  end
+
+  # project_resource_path("/path/to/image.png") => "portfolio/project/image.png"
+  def project_image_resource_path(project, image)
+    File.join(options.portfolio_dir, project, File.basename(image))
   end
 
   # Get all projects located in options.portfolio_dir
@@ -127,48 +141,49 @@ class Portfolio < ::Middleman::Extension
     File.join(options.portfolio_dir, "#{project}.html")
   end
 
-  # create a resource for each portfolio project
-  def project_resources    
-    projects.collect {|project| project_resource(project)}
-  end 
-
-  def project_resource(project)
+  def project_resource(project, thumbnail_resources)
     source_file = template('project.html.erb')
 
     Middleman::Sitemap::Resource.new(app.sitemap, project_resource_path(project), source_file).tap do |resource|
       resource.add_metadata(
         locals: {
           name: project,
-          images: project_images(project)
+          options: options,
+          thumbnail_resources: thumbnail_resources,
         }
       )
     end
   end
 
-  # get array of project thumbnail resources
-  def project_resources    
-    projects.collect {|project| project_resource(project)}
+  # create a resource for each portfolio project
+  def project_resources(thumbnail_resources)
+    projects.collect {|project| project_resource(project, thumbnail_resources)}
   end 
 
-  # generate thumbnail resource for each image in project dir
-  def project_thumbnail_resources()
-    resources = Array.new
-    
-    for project in projects
-      for image in project_images(project)
-        resources << project_thumbnail_resource(project, image)
-      end 
-    end
-
-    return resources
-  end
-
+  # generate thumbnail and resource for an image in a project
   def project_thumbnail_resource(project, image)
     debug "Generating thumbnail of #{project}/#{image}"
     tmp_image = generate_thumbnail(image)
 
     # Add image to sitemap
-    Middleman::Sitemap::Resource.new(app.sitemap, project_thumbnail_resource_path(project, File.basename(tmp_image)), tmp_image)    
+    Middleman::Sitemap::Resource.new(app.sitemap, project_thumbnail_resource_path(project, File.basename(tmp_image)), tmp_image).tap do |resource|
+      resource.add_metadata(
+        locals: {
+          project: project,
+          image: File.basename(image)
+        }
+      )
+    end    
+  end
+
+  # generate thumbnail resource for each image in project dir
+  def project_thumbnail_resources(project)
+    resources = Array.new
+    for image in project_images(project)
+      resources << project_thumbnail_resource(project, image)
+    end 
+
+    return resources
   end
 
   # Generate resource path to project thumbnail, eg: "portfolio/example-project/1-thumbnail.jpg"
@@ -186,24 +201,6 @@ class Portfolio < ::Middleman::Extension
   end
 
   helpers do
-    def project_dir(project)
-
-    end
-
-    def thumbnails
-    end
-
-    def thumbnail(image)
-    end
-
-    # Get uri to main thumbnail for a project
-    def project_thumbnail(project)
-      images
-    end
-
-    # get uri to project
-    def project_path(project)
-    end
   end
 end
 
