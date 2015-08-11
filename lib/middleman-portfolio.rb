@@ -51,7 +51,8 @@ class Portfolio < ::Middleman::Extension
     dst = File.join(Portfolio.tmp_dir, thumbnail_name(image))
     if !File.exist?(dst)
       img = ::MiniMagick::Image.open(image)
-      img.resize "#{options.thumbnail_width}x#{options.thumbnail_height}"
+      #img.resize "#{options.thumbnail_width}x#{options.thumbnail_height}"
+      img = resize_to_fill(img, options.thumbnail_width, options.thumbnail_height)
       img.write(dst)
       raise "Thumbnail not generated at #{dst}" unless File.exist?(dst)
     else
@@ -59,6 +60,30 @@ class Portfolio < ::Middleman::Extension
     end 
     return dst
   end
+
+  def resize_to_fill(img, width, height, gravity = 'Center')
+    cols, rows = img[:dimensions]
+    img.combine_options do |cmd|
+      if width != cols || height != rows
+        scale_x = width/cols.to_f
+        scale_y = height/rows.to_f
+        if scale_x >= scale_y
+          cols = (scale_x * (cols + 0.5)).round
+          rows = (scale_x * (rows + 0.5)).round
+          cmd.resize "#{cols}"
+        else
+          cols = (scale_y * (cols + 0.5)).round
+          rows = (scale_y * (rows + 0.5)).round
+          cmd.resize "x#{rows}"
+        end
+      end
+      cmd.gravity gravity
+      cmd.background "rgba(255,255,255,0.0)"
+      cmd.extent "#{width}x#{height}" if cols != width || rows != height
+    end
+    img = yield(img) if block_given?
+    img
+  end  
 
   def register_extension_templates
     # We call reload_path to register the templates directory with Middleman.
