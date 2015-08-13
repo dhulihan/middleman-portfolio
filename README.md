@@ -44,8 +44,11 @@ activate :portfolio do |f|
   # thumbnail height (px)
   f.thumbnail_height = 150
   
-  # css class added to thumbnail img tag
-  f.thumbnail_class, "portfolio-thumbnail"
+  # class added to thumbnail <img> tag
+  f.thumbnail_class, "thumbnail"
+
+  # class added to thumbnail <a> tag
+  f.thumbnail_link_class ""
 end
 ```
 

@@ -1,6 +1,6 @@
 <% for project in project_resources %>
 	<% if project.metadata[:locals][:thumbnail_resources] %>
-		<% link_to project.path, title: project.metadata[:locals][:name] do %>
+		<% link_to project.path, title: project.metadata[:locals][:name], class: "#{options.thumbnail_link_class}" do %>
 			<%= image_tag project.metadata[:locals][:thumbnail_resources].first.path, class: "#{options.thumbnail_class}" %>	
 		<% end %>
 	<% else %>

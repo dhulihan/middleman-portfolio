@@ -1,4 +1,3 @@
-# Extension namespace
 class Portfolio < ::Middleman::Extension
   TEMPLATES_DIR = File.expand_path('../template/source/', __FILE__)
 
@@ -6,7 +5,10 @@ class Portfolio < ::Middleman::Extension
   option :generate_thumbnails, true, 'Do you want thumbnails?'
   option :thumbnail_width, 200, "Width (in px) for thumbnails"
   option :thumbnail_height, 150,  "Height (in px) for thumbnails"
-  option :thumbnail_class, "portfolio-thumbnail", "css class for portfolio thumbnails"
+  option :thumbnail_class, "thumbnail", "class for thumbnail <img>"
+  option :thumbnail_link_class, "", "class for thumbnail <a> "
+  option :portfolio_template, nil, "path to portfolio index page template"
+  option :project_template, nil, "path to portfolio project page template"
 
   attr_accessor :sitemap
   #alias :included :registered
@@ -61,6 +63,7 @@ class Portfolio < ::Middleman::Extension
     return dst
   end
 
+  # Resize to fill target dims. Crop any excess. Will upscale.
   def resize_to_fill(img, width, height, gravity = 'Center')
     cols, rows = img[:dimensions]
     img.combine_options do |cmd|
@@ -123,7 +126,9 @@ class Portfolio < ::Middleman::Extension
   end 
 
   def portfolio_index_resource(project_resources)
-    source_file = template('index.html.erb')
+    # Load custom template or default  
+    source_file = options.portfolio_template ? File.join(app.source_dir, options.portfolio_template) : template('portfolio.html.erb') 
+  
     Middleman::Sitemap::Resource.new(app.sitemap, portfolio_index_path, source_file).tap do |resource|
       resource.add_metadata(
         # options: { layout: false }, 
@@ -168,8 +173,9 @@ class Portfolio < ::Middleman::Extension
   end
 
   def project_resource(project, thumbnail_resources)
-    source_file = template('project.html.erb')
-
+    # Load custom template or default  
+    source_file = options.project_template ? File.join(app.source_dir, options.project_template) : template('project.html.erb') 
+ 
     Middleman::Sitemap::Resource.new(app.sitemap, project_resource_path(project), source_file).tap do |resource|
       resource.add_metadata(
         locals: {
