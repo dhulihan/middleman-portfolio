@@ -2,6 +2,8 @@
 
 A low-drama portfolio generator for your [middleman](https://github.com/middleman/middleman) site. Place images in `source/portfolio/[project]/`, and build. That's it.
 
+![Screenshot](https://raw.githubusercontent.com/dhulihan/middleman-portfolio/master/screenshot.jpg)
+
 ## Setup
 
 Add this to `Gemfile`
