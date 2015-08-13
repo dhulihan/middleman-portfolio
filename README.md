@@ -49,8 +49,20 @@ activate :portfolio do |f|
 
   # class added to thumbnail <a> tag
   f.thumbnail_link_class ""
+
+  # override default portfolio template (must be located in source/)
+  f.portfolio_template "my-portfolio-page.html.erb"
+
+  # override default project template (must be located in source/ somewhere)
+  f.project_template "my-project-page.html.erb"  
 end
 ```
+
+### Custom Templates
+
+You can create your own custom portfolio and project template pages by using setting `portfolio_template` or `project_tamplate` options (see above).
+
+Place your template anywhere in your `source/` dir. Take a look at the default [portfolio]() or [project]() template for a good starting point.
 
 ## Additional Notes
 
