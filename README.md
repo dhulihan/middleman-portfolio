@@ -22,6 +22,13 @@ Add to `config.rb`
 activate :portfolio
 ```
 
+Add projects to portfolio dir
+
+```sh
+cp -r project-a/ source/portfolio/ 
+cp -r project-b/ source/portfolio/ 
+```
+
 Run `middleman server` 
 
 * [`http://localhost:4567/portfolio`](http://localhost:4567/portfolio) (if you're using `directory_indexes`)
@@ -72,6 +79,5 @@ Place your template anywhere in your `source/` dir. Take a look at the default [
 
 ## TODO
 
-* Custom templates
 * Page content from `data/`
 * Non-project images (stored directly in portfolio/)
