@@ -125,11 +125,8 @@ class Portfolio < ::Middleman::Extension
     "#{options.portfolio_dir}.html"
   end 
 
-  def portfolio_index_resource(project_resources)
-    # Load custom template or default  
-    source_file = options.portfolio_template ? File.join(app.source_dir, options.portfolio_template) : template('portfolio.html.erb') 
-  
-    Middleman::Sitemap::Resource.new(app.sitemap, portfolio_index_path, source_file).tap do |resource|
+  def portfolio_index_resource(project_resources) 
+    Middleman::Sitemap::Resource.new(app.sitemap, portfolio_index_path, source_file(:portfolio)).tap do |resource|
       resource.add_metadata(
         # options: { layout: false }, 
         locals: {
@@ -173,10 +170,8 @@ class Portfolio < ::Middleman::Extension
   end
 
   def project_resource(project, thumbnail_resources)
-    # Load custom template or default  
-    source_file = options.project_template ? File.join(app.source_dir, options.project_template) : template('project.html.erb') 
  
-    Middleman::Sitemap::Resource.new(app.sitemap, project_resource_path(project), source_file).tap do |resource|
+    Middleman::Sitemap::Resource.new(app.sitemap, project_resource_path(project), source_file(:project)).tap do |resource|
       resource.add_metadata(
         locals: {
           name: project,
@@ -223,6 +218,20 @@ class Portfolio < ::Middleman::Extension
   # Generate resource path to project thumbnail, eg: "portfolio/example-project/1-thumbnail.jpg"
   def project_thumbnail_resource_path(project, thumbnail)
     File.join(options.portfolio_dir, project, thumbnail)
+  end
+
+  # get path to source file for page
+  def source_file(page)
+    # Load custom template or default
+    opt = options.send("#{page}_template")
+
+    if opt
+      path = File.join(app.source_dir, opt)  
+      raise "#{path} doesn't exist" unless File.exist?(path)
+      return path 
+    else
+      return template("#{page}.html.erb") 
+    end
   end
 
   # thumbnail_name("1.jpg") => "1-200x150.jpg"
