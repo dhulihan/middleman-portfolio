@@ -236,11 +236,13 @@ class Portfolio < ::Middleman::Extension
 
   # thumbnail_name("1.jpg") => "1-200x150.jpg"
   def thumbnail_name(image)
-    "#{File.basename(image, '.*')}-#{options.thumbnail_width}x#{options.thumbnail_height}#{File.extname(image)}"
+    name = "#{File.basename(image, '.*')}-#{options.thumbnail_width}x#{options.thumbnail_height}#{File.extname(image)}"
+    name.gsub!(/ /, "-")
+    return name
   end
 
   def debug(str)
-    puts str
+    #puts str
   end
 
   helpers do
