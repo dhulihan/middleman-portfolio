@@ -60,9 +60,9 @@ end
 
 ### Custom Templates
 
-You can create your own custom portfolio and project template pages by using setting `portfolio_template` or `project_tamplate` options (see above).
+You can create your own custom portfolio and project template pages by using the `portfolio_template` or `project_tamplate` options (see above).
 
-Place your template anywhere in your `source/` dir. Take a look at the default [portfolio]() or [project]() template for a good starting point.
+Place your template anywhere in your `source/` dir. Take a look at the default [portfolio](https://github.com/dhulihan/middleman-portfolio/blob/master/lib/template/source/portfolio.html.erb) or [project](https://github.com/dhulihan/middleman-portfolio/blob/master/lib/template/source/project.html.erb) template for a good starting point.
 
 ## Additional Notes
 
