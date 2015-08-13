@@ -73,7 +73,7 @@ You can create your own custom portfolio and project template pages by using the
 
 Place your template anywhere in your `source/` dir. Take a look at the default [portfolio](https://github.com/dhulihan/middleman-portfolio/blob/master/lib/template/source/portfolio.html.erb) or [project](https://github.com/dhulihan/middleman-portfolio/blob/master/lib/template/source/project.html.erb) template for a good starting point. Here's an example portfolio page:
 
-```rb
+```erb
 <!-- source/portfolio.html.erb -->
 <% for project in project_resources %>
 	<% link_to project.path, class: "thumbnail" do %>
