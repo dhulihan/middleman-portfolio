@@ -220,7 +220,7 @@ class Portfolio < ::Middleman::Extension
     File.join(options.portfolio_dir, project, thumbnail)
   end
 
-  # get path to source file for page, use default if not set, freak out if missing
+  # get path to source file for page, use default if not set, freak out if missing 
   def source_file(page)
     # Load custom template or default
     opt = options.send("#{page}_template")
