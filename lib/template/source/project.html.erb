@@ -1,5 +1,5 @@
 <% for thumb in thumbnail_resources  %>
-	<% link_to thumb.metadata[:locals][:project_image_resource].path, class: "#{options.thumbnail_link_class}" do %>
+	<% link_to thumb.metadata[:locals][:project_image_resource].url, class: "#{options.thumbnail_link_class}" do %>
 		<%= image_tag thumb.path, class: "#{options.thumbnail_class}" %> 
 	<% end %>
 <% end %>
