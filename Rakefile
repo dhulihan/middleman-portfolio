@@ -1,14 +1,56 @@
+require 'rubygems'
 require 'bundler'
 Bundler::GemHelper.install_tasks
 
-require 'cucumber/rake/task'
+task default: :test
+# encoding: utf-8
 
-Cucumber::Rake::Task.new(:cucumber, 'Run features that should pass') do |t|
-  t.cucumber_opts = "--color --tags ~@wip --strict --format #{ENV['CUCUMBER_FORMAT'] || 'Fivemat'}"
+begin
+  Bundler.setup(:default, :development)
+rescue Bundler::BundlerError => e
+  $stderr.puts e.message
+  $stderr.puts "Run `bundle install` to install missing gems"
+  exit e.status_code
+end
+require 'rake'
+
+require 'jeweler'
+
+Jeweler::Tasks.new do |gem|
+  # gem is a Gem::Specification... see http://guides.rubygems.org/specification-reference/ for more options
+  gem.name = "middleman-portfolio"
+  gem.homepage = "http://github.com/dhulihan/middleman-portfolio"
+  gem.license = "MIT"
+  gem.summary = %Q{A low-drama portfolio generator for your middleman site.}
+  gem.description = %Q{A low-drama portfolio generator for your middleman site.}
+  gem.email = "dhulihan@gmail.com"
+  gem.authors = ["Dave Hulihan"]
+  # dependencies defined in Gemfile
 end
 
-require 'rake/clean'
+Jeweler::RubygemsDotOrgTasks.new
 
-task test: ['cucumber']
+require 'rake/testtask'
+Rake::TestTask.new(:test) do |test|
+  test.libs << 'lib' << 'test'
+  test.pattern = 'test/**/test_*.rb'
+  test.verbose = true
+end
 
-task default: :test
+desc "Code coverage detail"
+task :simplecov do
+  ENV['COVERAGE'] = "true"
+  Rake::Task['test'].execute
+end
+
+task :default => :test
+
+require 'rdoc/task'
+Rake::RDocTask.new do |rdoc|
+  version = File.exist?('VERSION') ? File.read('VERSION') : ""
+
+  rdoc.rdoc_dir = 'rdoc'
+  rdoc.title = "middleman-portfolio #{version}"
+  rdoc.rdoc_files.include('README*')
+  rdoc.rdoc_files.include('lib/**/*.rb')
+end

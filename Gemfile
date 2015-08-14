@@ -11,6 +11,7 @@ group :development do
   gem 'rake'
   gem 'rdoc'
   gem 'yard'
+  gem 'jeweler'
 end
 
 group :test do
