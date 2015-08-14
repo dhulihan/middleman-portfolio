@@ -1,10 +1,5 @@
 require 'rubygems'
 require 'bundler'
-Bundler::GemHelper.install_tasks
-
-task default: :test
-# encoding: utf-8
-
 begin
   Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e
@@ -15,7 +10,6 @@ end
 require 'rake'
 
 require 'jeweler'
-
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://guides.rubygems.org/specification-reference/ for more options
   gem.name = "middleman-portfolio"
@@ -27,7 +21,6 @@ Jeweler::Tasks.new do |gem|
   gem.authors = ["Dave Hulihan"]
   # dependencies defined in Gemfile
 end
-
 Jeweler::RubygemsDotOrgTasks.new
 
 require 'rake/testtask'
