@@ -2,10 +2,7 @@
 # the following line to use "http://" instead
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in middleman-portfolio.gemspec
-gemspec
-
-gem 'mini_magick'
+gem 'mini_magick', '~> 4.2.10'
 
 group :development do
   gem 'rake'
