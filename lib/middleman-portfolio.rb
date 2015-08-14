@@ -37,6 +37,8 @@ class Portfolio < ::Middleman::Extension
     # Create tmp dir
     Dir.mkdir(Portfolio.tmp_dir) unless Dir.exist?(Portfolio.tmp_dir)
 
+    require "mini_magick"
+
     # set up your extension
     app.after_build do
       Portfolio.cleanup
@@ -148,7 +150,11 @@ class Portfolio < ::Middleman::Extension
     Dir.glob(File.join(project_dir(project), '*'))
   end
 
-  # project_resource_path("/path/to/image.png") => "portfolio/project/image.png"
+  def project_image_resource(project, image)
+    Middleman::Sitemap::Resource.new(app.sitemap, project_image_resource_path(project, image), image)
+  end 
+
+  # project_image_resource_path("/path/to/image.png") => "portfolio/project/image.png"
   def project_image_resource_path(project, image)
     File.join(options.portfolio_dir, project, File.basename(image))
   end
@@ -170,7 +176,6 @@ class Portfolio < ::Middleman::Extension
   end
 
   def project_resource(project, thumbnail_resources)
- 
     Middleman::Sitemap::Resource.new(app.sitemap, project_resource_path(project), source_file(:project)).tap do |resource|
       resource.add_metadata(
         locals: {
@@ -199,7 +204,8 @@ class Portfolio < ::Middleman::Extension
       resource.add_metadata(
         locals: {
           project: project,
-          image: File.basename(image)
+          project_image_resource: project_image_resource(project, image),
+          image: project_image_resource_path(project, image)
         }
       )
     end    
@@ -242,7 +248,7 @@ class Portfolio < ::Middleman::Extension
   end
 
   def debug(str)
-    #puts str
+    #puts str unless app.build?
   end
 
   helpers do
