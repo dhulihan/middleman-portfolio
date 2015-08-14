@@ -1,3 +1,9 @@
+PATH
+  remote: ../..
+  specs:
+    middleman-portfolio (1.0.0)
+      mini_magick (~> 4.2.10)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -77,8 +83,6 @@ GEM
       middleman-core (>= 3.0.2)
       multi_json (~> 1.0)
       rack-livereload
-    middleman-portfolio (1.0.0)
-      mini_magick (~> 4.2.10)
     middleman-sprockets (3.4.2)
       middleman-core (>= 3.3)
       sprockets (~> 2.12.1)
@@ -134,6 +138,6 @@ PLATFORMS
 DEPENDENCIES
   middleman (~> 3.4.0)
   middleman-livereload (~> 3.1.0)
-  middleman-portfolio
+  middleman-portfolio!
   tzinfo-data
   wdm (~> 0.1.0)
